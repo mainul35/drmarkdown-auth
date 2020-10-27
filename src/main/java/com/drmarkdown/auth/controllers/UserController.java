@@ -1,12 +1,10 @@
 package com.drmarkdown.auth.controllers;
 
 import com.drmarkdown.auth.dtos.UserInfoDto;
+import com.drmarkdown.auth.dtos.UserLoginDto;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -21,4 +19,21 @@ public class UserController {
         System.out.println(userInfoDto.toString());
         return userInfoDto;
     }
+
+    @GetMapping("/info/{userId}")
+    public UserInfoDto getUserInfo(@PathVariable String userId) {
+        System.out.println(userId);
+        return null;
+    }
+
+    @PostMapping("/login")
+    public UserLoginDto login(@RequestBody UserLoginDto userLoginDto) {
+
+        Preconditions.checkNotNull(userLoginDto);
+        System.out.println(userLoginDto.toString());
+        return userLoginDto;
+    }
+    // TODO: Update user
+
+    // TODO: Delete user
 }
