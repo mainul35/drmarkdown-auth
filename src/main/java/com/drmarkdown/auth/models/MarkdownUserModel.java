@@ -1,5 +1,6 @@
 package com.drmarkdown.auth.models;
 
+import com.drmarkdown.auth.dtos.UserInfoDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -7,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Entity(name = "users")
@@ -33,5 +35,12 @@ public class MarkdownUserModel extends GenericModel {
 
     public MarkdownUserModel() {
         super();
+    }
+
+    public MarkdownUserModel(UserInfoDto userInfoDto) {
+        this.setId(userInfoDto.getId() == null ? UUID.randomUUID().toString() : userInfoDto.getId());
+        this.setEmail(userInfoDto.getEmail());
+        this.setDisplayName(userInfoDto.getDisplayName());
+        this.setUsername(userInfoDto.getUsername());
     }
 }

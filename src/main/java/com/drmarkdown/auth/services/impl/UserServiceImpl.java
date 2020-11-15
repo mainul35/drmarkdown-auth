@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(UserInfoDto userInfoDto) {
         // Transform userInfoDto to markdown role model
-        MarkdownUserModel markdownUserModel = modelMapper.map(userInfoDto, MarkdownUserModel.class);
+        MarkdownUserModel markdownUserModel = new MarkdownUserModel(userInfoDto);
 
         // Hash the password first
         checkNotNull(userInfoDto.getPassword());

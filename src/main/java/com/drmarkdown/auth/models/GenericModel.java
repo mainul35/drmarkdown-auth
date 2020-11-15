@@ -14,31 +14,16 @@ import java.util.UUID;
 public abstract class GenericModel implements Serializable {
 
     @Id
-    private String id;
+    private String id = UUID.randomUUID().toString();
 
     @CreatedDate
-    private Date createdAt;
+    private Date createdAt = new Date();
 
     @LastModifiedDate
     private Date updatedAt;
 
     @Version
     private Integer version;
-
-    /**
-     * Returns if the {@code Persistable} is new or was persisted already.
-     *
-     * @return if {@literal true} the object is new.
-     */
-/*    @Override
-    public boolean isNew() {
-        return isNull(this.createdAt);
-    }*/
-
-
-    GenericModel() {
-        this.id = UUID.randomUUID().toString();
-    }
 
     public String getId() {
         return id;

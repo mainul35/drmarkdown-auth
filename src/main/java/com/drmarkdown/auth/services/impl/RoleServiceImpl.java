@@ -21,8 +21,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void createRole(RoleDto roleDto) {
-        MarkdownRoleModel markdownRoleModel = modelMapper.map(roleDto, MarkdownRoleModel.class);
-//        roleRepository.save(markdownRoleModel);
+        MarkdownRoleModel markdownRoleModel = new MarkdownRoleModel(roleDto);
+        roleRepository.save(markdownRoleModel);
         modelMapper.map(markdownRoleModel, roleDto);
     }
 
