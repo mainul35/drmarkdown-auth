@@ -2,30 +2,36 @@ package com.drmarkdown.auth.models;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.mongodb.core.index.IndexDirection;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
 import java.util.List;
 
 @Data
-@Document(collation = "users")
+@Entity(name = "users")
 @EqualsAndHashCode(callSuper = true)
 public class MarkdownUserModel extends GenericModel {
-    @Indexed(direction = IndexDirection.DESCENDING, unique = true)
+
+    @Column(unique = true)
     private String username;
 
-    @Indexed(direction = IndexDirection.DESCENDING, unique = true)
+    @Column(unique = true)
     private String displayName;
 
-    @Indexed(direction = IndexDirection.DESCENDING, unique = true)
+    @Column(unique = true)
     private String email;
 
+    @Column
     private String jwtToken;
+
+    @Column
     private String password;
+
+    @ElementCollection
     private List<String> roles;
 
-    MarkdownUserModel() {
+    public MarkdownUserModel() {
         super();
     }
 }

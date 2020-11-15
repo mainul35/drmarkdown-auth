@@ -2,12 +2,16 @@ package com.drmarkdown.auth.models;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
 @Data
-@Document(collation = "roles")
+@Entity(name = "roles")
 @EqualsAndHashCode(callSuper = true)
 public class MarkdownRoleModel extends GenericModel {
+
+    @Column
     private String role;
 
     public MarkdownRoleModel() {

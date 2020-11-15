@@ -1,20 +1,17 @@
 package com.drmarkdown.auth.models;
 
-import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-import static java.util.Objects.isNull;
-
-@Data
-public class GenericModel implements Serializable, Persistable<String> {
+@MappedSuperclass
+public abstract class GenericModel implements Serializable {
 
     @Id
     private String id;
@@ -25,17 +22,53 @@ public class GenericModel implements Serializable, Persistable<String> {
     @LastModifiedDate
     private Date updatedAt;
 
+    @Version
+    private Integer version;
+
     /**
      * Returns if the {@code Persistable} is new or was persisted already.
      *
      * @return if {@literal true} the object is new.
      */
-    @Override
+/*    @Override
     public boolean isNew() {
         return isNull(this.createdAt);
-    }
+    }*/
+
 
     GenericModel() {
         this.id = UUID.randomUUID().toString();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

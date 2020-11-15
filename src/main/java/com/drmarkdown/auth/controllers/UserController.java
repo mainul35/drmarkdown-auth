@@ -2,8 +2,10 @@ package com.drmarkdown.auth.controllers;
 
 import com.drmarkdown.auth.dtos.UserInfoDto;
 import com.drmarkdown.auth.dtos.UserLoginDto;
+import com.drmarkdown.auth.services.UserService;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -11,27 +13,25 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class UserController {
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/create")
     public UserInfoDto createUser(@RequestBody UserInfoDto userInfoDto) {
-
         Preconditions.checkNotNull(userInfoDto);
-
-        System.out.println(userInfoDto.toString());
+        userService.createUser(userInfoDto);
         return userInfoDto;
     }
 
     @GetMapping("/info/{userId}")
     public UserInfoDto getUserInfo(@PathVariable String userId) {
-        System.out.println(userId);
-        return null;
+        return userService.retrieveUserInfo(userId);
     }
 
     @PostMapping("/login")
-    public UserLoginDto login(@RequestBody UserLoginDto userLoginDto) {
-
+    public UserInfoDto login(@RequestBody UserLoginDto userLoginDto) {
         Preconditions.checkNotNull(userLoginDto);
-        System.out.println(userLoginDto.toString());
-        return userLoginDto;
+        return userService.loginUser(userLoginDto);
     }
     // TODO: Update user
 
