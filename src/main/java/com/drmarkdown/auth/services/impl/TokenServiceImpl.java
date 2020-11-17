@@ -12,8 +12,6 @@ import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 public class TokenServiceImpl implements TokenService {
 
@@ -39,6 +37,6 @@ public class TokenServiceImpl implements TokenService {
                 .setAudience(markdownUserModel.getRoles().toString())
                 .signWith(authSigninKeyResolver.getSecretKey(), SignatureAlgorithm.HS512)
                 .compact();
-        markdownUserModel.setJwtToken(UUID.randomUUID().toString());
+        markdownUserModel.setJwtToken(jwtToken);
     }
 }

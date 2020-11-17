@@ -73,7 +73,9 @@ public class UserServiceImpl implements UserService {
     public UserInfoDto retrieveUserInfo(String userId) {
         Optional<MarkdownUserModel> markdownUserModel = userRepository.findById(userId);
         if (markdownUserModel.isPresent()) {
-            return modelMapper.map(markdownUserModel.get(), UserInfoDto.class);
+            UserInfoDto userInfoDto = new UserInfoDto();
+            userInfoDto.mapEntityToDto(markdownUserModel.get());
+            return userInfoDto;
         }
         return null;
     }

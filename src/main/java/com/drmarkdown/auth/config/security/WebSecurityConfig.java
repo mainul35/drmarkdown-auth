@@ -1,13 +1,22 @@
 package com.drmarkdown.auth.config.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private AuthenticationProvider authenticationProvider;
 
     /**
      * Override this method to configure the {@link HttpSecurity}. Typically subclasses
@@ -28,10 +37,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // We don't need to create any session
+                .and()
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(authFIlter(), AnonymousAuthenticationFilter.class) // Will handle authentication
                 .authorizeRequests()
                 .anyRequest()
-                //.antMatchers("/**")
-                .permitAll();
+                .authenticated()
+                .and()
+                // Disable unnecessary spring security features
+                .csrf().disable()
+                .httpBasic().disable()
+                .logout().disable()
+                .cors();
+    }
+
+    public AuthFIlter authFIlter() throws Exception {
+        OrRequestMatcher orRequestMatcher = new OrRequestMatcher(
+                new AntPathRequestMatcher("/user/**"),
+                new AntPathRequestMatcher("/token/**"),
+                new AntPathRequestMatcher("/role/**")
+        );
+        AuthFIlter authFIlter = new AuthFIlter(orRequestMatcher);
+        authFIlter.setAuthenticationManager(authenticationManager());
+        return authFIlter;
     }
 }

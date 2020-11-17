@@ -4,10 +4,12 @@ import com.drmarkdown.auth.dtos.RoleDto;
 import com.drmarkdown.auth.services.RoleService;
 import com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/role")
+@PreAuthorize("hasAnyRole('ADMIN')")
 public class RoleController {
 
     @Autowired

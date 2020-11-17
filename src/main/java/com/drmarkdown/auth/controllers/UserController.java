@@ -18,6 +18,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('ANONYMOUS', 'ADMIN')")
     public UserInfoDto createUser(@RequestBody UserInfoDto userInfoDto) {
         Preconditions.checkNotNull(userInfoDto);
         userService.createUser(userInfoDto);
