@@ -14,6 +14,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(UserInfoDto userInfoDto) {
         // Transform userInfoDto to markdown role model
-        MarkdownUserModel markdownUserModel = modelMapper.map(userInfoDto, MarkdownUserModel.class);
+        MarkdownUserModel markdownUserModel = new MarkdownUserModel(userInfoDto);
 
         // Hash the password first
         checkNotNull(userInfoDto.getPassword());
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
         markdownUserModel.setRoles(
                 roleRepository.findAll().stream()
                         .map(MarkdownRoleModel::getRole)
-                        .filter(role -> role.contains("USER"))
+                        .filter(role -> matchRole(role, userInfoDto.getRoles()))
                         .collect(Collectors.toList())
         );
 
@@ -61,7 +62,11 @@ public class UserServiceImpl implements UserService {
         userRepository.save(markdownUserModel);
 
         // update the userInfoDto after the markdown role Model has been saved
-        modelMapper.map(markdownUserModel, userInfoDto);
+        userInfoDto.mapEntityToDto(markdownUserModel);
+    }
+
+    private boolean matchRole(String role, List<String> roles) {
+        return roles.contains(role);
     }
 
     @Override
