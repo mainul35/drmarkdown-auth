@@ -1,0 +1,30 @@
+[
+  {
+    "displayName": "Mainul Hasan_1",
+    "roles": [
+      "USER"
+    ],
+    "username": "mainul_1",
+    "password": "secret",
+    "email": "mainuls18+001@gmail.com"
+  },
+  {
+    "displayName": "Mainul Hasan_2",
+    "roles": [
+      "ADMIN"
+    ],
+    "username": "mainul_2",
+    "password": "secret",
+    "email": "mainuls18+002@gmail.com"
+  },
+  {
+    "displayName": "Mainul Hasan_3",
+    "roles": [
+      "USER",
+      "ADMIN"
+    ],
+    "username": "mainul_3",
+    "password": "secret",
+    "email": "mainuls18+003@gmail.com"
+  }
+]
