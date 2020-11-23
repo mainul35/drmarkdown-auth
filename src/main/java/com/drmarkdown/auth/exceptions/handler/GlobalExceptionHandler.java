@@ -2,6 +2,7 @@ package com.drmarkdown.auth.exceptions.handler;
 
 import com.drmarkdown.auth.exceptions.model.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final String BAD_CREDENTIALS = "bad_credentials";
+    private static final String CONFLICT = "conflict";
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorResponse> handleBadCredentialsExceptions(final BadCredentialsException e, final WebRequest webRequest) {
@@ -24,5 +26,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         log.error(String.valueOf(errorResponse), e);
         return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DuplicateKeyException.class)
+    public ResponseEntity<ErrorResponse> handlePSQLExceptions(final DuplicateKeyException e, final WebRequest webRequest) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setMessage("Duplicate entry found in database: " + e.getMessage());
+        errorResponse.setErrorIdentifier(CONFLICT);
+        log.error(String.valueOf(errorResponse), e);
+        return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.CONFLICT);
     }
 }

@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<MarkdownUserModel, String>
     Optional<MarkdownUserModel> findByJwtToken(String jwtToken);
 
     List<MarkdownUserModel> findByUsernameOrEmail(String username, String email);
+
+    Optional<MarkdownUserModel> findByEmail(String email);
 }

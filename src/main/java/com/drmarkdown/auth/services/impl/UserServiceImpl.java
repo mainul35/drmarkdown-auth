@@ -10,10 +10,12 @@ import com.drmarkdown.auth.services.TokenService;
 import com.drmarkdown.auth.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,11 +42,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(UserInfoDto userInfoDto) {
+
+        if (userRepository.findByUsername(userInfoDto.getUsername()).isPresent()) {
+            throw new DuplicateKeyException("Username is already registered");
+        }
+
+        if (userRepository.findByEmail(userInfoDto.getEmail()).isPresent()) {
+            throw new DuplicateKeyException("Email address is already registered");
+        }
         // Transform userInfoDto to markdown role model
         MarkdownUserModel markdownUserModel = new MarkdownUserModel(userInfoDto);
 
         // Hash the password first
         checkNotNull(userInfoDto.getPassword());
+
+        if (Optional.ofNullable(userInfoDto.getRoles()).isEmpty()) {
+            userInfoDto.setRoles(Collections.singletonList("USER"));
+        }
+
         markdownUserModel.setPassword(passwordEncoder.encode(userInfoDto.getPassword()));
 
         // Assign default role for user

@@ -19,7 +19,7 @@ public class MarkdownUserModel extends GenericModel {
     @Column(unique = true)
     private String username;
 
-    @Column(unique = true)
+    @Column
     private String displayName;
 
     @Column(unique = true)
