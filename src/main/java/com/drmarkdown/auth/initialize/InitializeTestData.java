@@ -8,7 +8,7 @@ import com.drmarkdown.auth.services.TokenService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -28,11 +28,14 @@ public class InitializeTestData implements InitializeData {
 
     private final TokenService tokenService;
 
-    public InitializeTestData(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, TokenService tokenService) {
+    private final ResourceLoader resourceLoader;
+
+    public InitializeTestData(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, TokenService tokenService, ResourceLoader resourceLoader) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenService = tokenService;
+        this.resourceLoader = resourceLoader;
     }
 
     @Override
@@ -47,7 +50,7 @@ public class InitializeTestData implements InitializeData {
         try {
             List<MarkdownRoleModel> markdownRoleModels = new ObjectMapper()
                     .readValue(
-                            new ClassPathResource("roles.json").getFile(),
+                            resourceLoader.getResource("classpath:roles.json").getInputStream(),
                             new TypeReference<ArrayList<MarkdownRoleModel>>() {
                             }
                     );
@@ -64,7 +67,7 @@ public class InitializeTestData implements InitializeData {
         try {
             List<MarkdownUserModel> markdownUserModels = new ObjectMapper()
                     .readValue(
-                            new ClassPathResource("users.json").getFile(),
+                            resourceLoader.getResource("classpath:users.json").getInputStream(),
                             new TypeReference<ArrayList<MarkdownUserModel>>() {
                             }
                     );

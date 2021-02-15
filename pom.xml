@@ -108,6 +108,42 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
 
+    <!-- region: Profiles -->
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <maven.test.skip>false</maven.test.skip>
+                <active.profile>dev</active.profile>
+                <db.url>jdbc:postgresql://localhost:5432/auth_demo?reWriteBatchedInserts=true</db.url>
+                <db.password>secret</db.password>
+                <db.username>postgres</db.username>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <maven.test.skip>false</maven.test.skip>
+                <active.profile>prod</active.profile>
+                <db.url>jdbc:postgresql://localhost:5432/auth_demo_prod?reWriteBatchedInserts=true</db.url>
+                <db.password>secret</db.password>
+                <db.username>postgres</db.username>
+            </properties>
+        </profile>
+    </profiles>
+    <!-- endregion: Profiles -->
 </project>
