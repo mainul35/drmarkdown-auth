@@ -4,18 +4,18 @@ import com.drmarkdown.auth.dtos.UserInfoDto;
 import com.drmarkdown.auth.dtos.UserLoginDto;
 import com.drmarkdown.auth.services.UserService;
 import com.google.common.base.Preconditions;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/user")
 @Slf4j
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @PostMapping("/create")
     @PreAuthorize("hasAnyRole('ANONYMOUS', 'ADMIN')")
