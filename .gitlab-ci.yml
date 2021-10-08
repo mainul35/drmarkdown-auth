@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - publish
 
 image: maven:adoptopenjdk
 
@@ -46,3 +47,22 @@ build_phase:
 #      - node_modules
 #  only:
 #    - master
+
+# Publish Phase
+# =============
+publish_phase:
+  stage: publish
+  before_script:
+    - echo $DOCKER_REPO_PASSWORD | docker login --username $DOCKER_REPO_USERNAME --password-stdin
+  image: docker:git
+  services:
+    - docker:19.03.5-dind
+  script:
+    - docker build -t $DOCKER_REPO_USERNAME/$DOCKER_REPO_NAME:auth .
+    - docker push $DOCKER_REPO_USERNAME/$DOCKER_REPO_NAME:auth
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - .mvn
+      - target
