@@ -1,0 +1,45 @@
+stages:
+  - build
+  - test
+
+image: maven:adoptopenjdk
+
+# Build Phase
+# ===========
+build_phase:
+  variables:
+    SPRING_PROFILE_ACTIVE: prod
+  stage: build
+  before_script:
+    - mvn clean
+  script:
+    - mvn install
+  artifacts:
+    paths:
+      - target/auth-0.0.1-SNAPSHOT.jar
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - .mvn
+      - target
+  only:
+    - master
+
+
+# Test Phase
+# ==========
+#test_phase:
+#  stage: test
+#  image: trion/ng-cli-karma:9.0.1
+#  allow_failure: false
+#  script:
+#    - ng test --progress=false --watch=false
+#  cache:
+#    policy: pull
+#    key: "$CI_COMMIT_REF_NAME"
+#    paths:
+#      - dist
+#      - node_modules
+#  only:
+#    - master

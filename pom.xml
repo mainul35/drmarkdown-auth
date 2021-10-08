@@ -139,9 +139,11 @@
             <properties>
                 <maven.test.skip>false</maven.test.skip>
                 <active.profile>prod</active.profile>
-                <db.url>jdbc:postgresql://localhost:5432/auth_demo_prod?reWriteBatchedInserts=true</db.url>
-                <db.password>secret</db.password>
-                <db.username>postgres</db.username>
+                <db.url>
+                    jdbc:postgresql://ec2-44-198-151-32.compute-1.amazonaws.com:5432/d73v1h3l34pjpn?reWriteBatchedInserts=true
+                </db.url>
+                <db.password>cd0f8333703f493cd039fc15065564441fb76ede643d8728e151e33f7ea72127</db.password>
+                <db.username>hfzgpccbpfnnkz</db.username>
             </properties>
         </profile>
     </profiles>
