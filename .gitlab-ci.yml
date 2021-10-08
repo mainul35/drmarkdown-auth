@@ -9,6 +9,9 @@ image: maven:adoptopenjdk
 build_phase:
   variables:
     SPRING_PROFILE_ACTIVE: prod
+    PROD_DB_URL: jdbc:postgresql://ec2-44-198-151-32.compute-1.amazonaws.com:5432/d73v1h3l34pjpn?reWriteBatchedInserts=true
+    PROD_DB_USER: hfzgpccbpfnnkz
+    PROD_DB_PASSWORD: cd0f8333703f493cd039fc15065564441fb76ede643d8728e151e33f7ea72127
   stage: build
   before_script:
     - mvn clean
