@@ -37,12 +37,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // We don't need to create any session
-                .and()
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(authFIlter(), AnonymousAuthenticationFilter.class) // Will handle authentication
-                .authorizeRequests()
+                .sessionManagement ()
+                .sessionCreationPolicy (SessionCreationPolicy.STATELESS) // We don't need to create any session
+                .and ()
+                .authenticationProvider (authenticationProvider)
+                .addFilterBefore (authFIlter (), AnonymousAuthenticationFilter.class) // Will handle authentication
+                .authorizeRequests ()
+                .antMatchers ("/actuator/health").permitAll ()
                 .anyRequest()
                 .authenticated()
                 .and()
